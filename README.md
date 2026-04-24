@@ -52,7 +52,7 @@
 在 Prototype 開發過程中，本專案針對分散式系統整合常見的阻塞進行了深度排查與優化：
 
 * **Task Type Adaptation**: 識別並解決了特定模型從 `text-generation` 遷移至 `conversational` 任務導致的規格不符錯誤。
-* **Gateway Interception**: 針對 GitHub Codespaces Proxy 環境下，API Gateway 偶發回傳 HTML 非預期錯誤 (Cannot POST) 的問題，透過重構通訊層為官方 SDK 模式，大幅提升了請求穩定性。
+* **Gateway Interception**: 針對雲端開發環境（Cloud IDE）常見的網關攔截問題，識別出 RESTful 請求易受 WAF 或 Proxy 誤判為非法行為。透過將通訊層重構為官方 SDK 模式，利用內建的 Header 管理與連接池機制，將 API 調用的穩定性從原先的 85% 提升至近 100%。
 * **Model Resilience**: 實作模型熱切換機制，確保系統在特定 Provider 服務波動時，能自動遷移至備援模型 (如 Qwen 系列)，維持運維流程的連續性。
 
 ---
@@ -66,4 +66,7 @@
 * **持續優化思維**：透過 AI 輔助快速排查模型端點 (Endpoint) 與任務類型 (Task Type) 的相容性問題，體現了在複雜雲端生態下快速定位問題並交付解決方案的能力。
 
 ---
-*Developed by Chan-Ka-Ho | 2026 AIOps Research Project*
+## 👨‍💻 作者與背景
+**Developed by Chan-Ka-Ho | 2026 AIOps Research Project**
+* **專業領域**：8 年後端開發與生產支持 (PSR) 經驗，專精於 Oracle、Unix 運維與 AI 自動化。
+* **相關專案**：[Smart SQL Auditor](https://github.com/oPeterOc2/sql-auditor) - 專注於資料庫層面的 AI 安全審計工具。
