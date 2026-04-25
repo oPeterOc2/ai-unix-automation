@@ -10,7 +10,7 @@
 * **高可用性 API 適配**：實作了模型端點熱切換與官方 SDK 整合，成功克服雲端開發環境（GitHub Codespaces）下的網路協定攔截問題。
 
 ### 📺 實機演示 (Demo)
-![Smart SQL Auditor Demo](assets/unix-diag-agent-workflow.mp4)
+![Unix O&M Diagnostic Agent Demo](assets/unix-diag-agent-workflow.mp4)
 
 ## 🔄 系統工作流 (Workflow)
 ```mermaid
