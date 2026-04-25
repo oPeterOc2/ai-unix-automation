@@ -9,6 +9,9 @@
 * **智能日誌分析**：整合 Hugging Face Inference API，針對複雜的系統報錯（如 Permission Denied, Path Not Found）提供人類可讀的診斷報告。
 * **高可用性 API 適配**：實作了模型端點熱切換與官方 SDK 整合，成功克服雲端開發環境（GitHub Codespaces）下的網路協定攔截問題。
 
+### 📺 實機演示 (Demo)
+![Smart SQL Auditor Demo](assets/unix-diag-agent-workflow.mp4)
+
 ## 🔄 系統工作流 (Workflow)
 ```mermaid
 graph LR
