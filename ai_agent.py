@@ -1,3 +1,6 @@
+# [Security Note] Use your own Hugging Face Token (HF_TOKEN) to run this script.
+# Do not hardcode your token; set it as an environment variable for safety.
+
 import os
 import sys
 from huggingface_hub import InferenceClient
@@ -5,7 +8,7 @@ from huggingface_hub import InferenceClient
 def get_ai_diagnostic(error_content):
     token = os.getenv("HF_TOKEN")
     if not token:
-        return "Error: 找不到 HF_TOKEN 環境變數。"
+        return "Error: HF_TOKEN not found. Please set it using 'export HF_TOKEN=your_token'."
 
     try:
         # 統一使用 Qwen/Qwen2.5-7B-Instruct
