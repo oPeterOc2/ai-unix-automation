@@ -5,31 +5,32 @@
 
 
 ## 🚀 核心功能
-* **異步錯誤捕捉**：利用 Unix Pipeline 技術，精準重定向錯誤流並自動觸發診斷 Agent。
+* **異步錯誤捕捉與診斷**：利用 Unix Pipeline 技術監控錯誤流，並透過 **Python 異步隊列處理機制**進行非阻塞診斷。
+* **自動數據脫敏 (Data Masking)**：在傳輸前自動遮蔽 IP 地址與內部路徑，確保運維數據安全。
 * **智能日誌分析**：整合 Hugging Face Inference API，針對複雜的系統報錯（如 Permission Denied, Path Not Found）提供人類可讀的診斷報告。
-* **高可用性 API 適配**：實作了模型端點熱切換與官方 SDK 整合，成功克服雲端開發環境（GitHub Codespaces）下的網路協定攔截問題。
+* **多後端 API 適配**：支援雲端 (HF)、**本地 (Ollama) 與企業內部 Server** 三種模式，具備 API 頻率限制與熱切換功能。
 
 ### 📺 實機演示 (Demo)
-![Unix O&M Diagnostic Agent Demo](assets/unix-diag-agent-workflow.mp4)
+![Unix O&M Diagnostic Agent Demo](assets/unix-diag-agent-v2-demo.mp4)
 
 ## 🔄 系統工作流 (Workflow)
 ```mermaid
 graph LR
-    A[Unix Job/Script] -- stderr --> B[Log Buffer]
+    A[Unix Job] -- stderr --> B[Log Buffer & Categorization]
     B --> C[AI Agent - Python]
-    C -- API Request --> D[Qwen 2.5 LLM]
+    C -- Masking & Queueing --> D[LLM (Qwen 2.5)]
     D -- Expert Advice --> E[Diagnosis Report]
 ```
 
 ## 🛠️ 技術棧
-* **語言**: Bash Shell, Python 3.x
+* **語言**: Bash Shell, Python 3.x **(Threading, Queue)**
 * **AI 基礎設施**: Hugging Face SDK (`huggingface_hub`)
 * **核心模型**: `Qwen/Qwen2.5-7B-Instruct` (Serverless Inference API)
 * **開發環境**: GitHub Codespaces
 
 ## 📂 檔案架構
-* `job.sh`: 模擬業務邏輯，包含錯誤偵測與 AI Agent 觸發邏輯。
-* `ai_agent.py`: 核心 AI 邏輯，負責 API 請求管理、Prompt 工程與結果解析。
+* `job.sh`: 模擬業務邏輯，包含**錯誤自動分類**、時間戳記紀錄與背景診斷觸發。
+* `ai_agent.py`: 核心 AI 邏輯，實作 **OOP 類別封裝**、數據脫敏、異步處理與多後端支持。
 * `test_hf.py`: 環境驗證工具，用於診斷模型端點可用性與 Token 權限。
 
 ## ⚙️ 快速上手
@@ -48,16 +49,37 @@ graph LR
    ```
 ## 📖 診斷輸出範例
 ```text
-!! 檢測到 Job B 執行失敗 !!
-正在將錯誤日誌傳送至 AI 進行分析...
+### 1. 終端機即時監控 (Terminal Console)
+[2026-04-25 23:48:11] 🚀 啟動業務 Job (模擬環境)...
+[2026-04-25 23:48:11] !! 檢測到失敗 (Exit Code: 2) !!
+[2026-04-25 23:48:11] 🔍 初步判定: 路徑或檔案不存在 (Path/IO)
+[2026-04-25 23:48:11] 正在傳送至 AI 進行深度 RCA 分析...
+[2026-04-25 23:48:11] ✅ AI 診斷已在背景啟動，報告將輸出至: ai_report.log
+
+### 2. AI 診斷報告紀錄 (ai_report.log)
 
 --- AI 診斷報告 ---
-這個錯誤日誌表明 'ls' 命令無法訪問目標路徑 /data/backup/database_2026，原因為「檔案或目錄不存在」。
-建議：
-1. 確認 /data/backup/ 目錄是否存在。
-2. 檢查文件名拼寫是否包含大小寫錯誤。
-3. 使用 'ls -ld /data/backup/' 確認上層目錄權限。
+### RCA 報告
+
+#### 事件概述
+在 2026-04-25 23:49:44 時間點，系統嘗試執行 `ls` 命令以列出指定路徑 `[HIDDEN_PATH]/database_2026` 的內容，但因該路徑不存在而失敗。
+
+#### 事件詳細
+- **時間**: 2026-04-25 23:49:44
+- **路徑**: `[HIDDEN_PATH]/database_2026`
+- **錯誤類型**: 路徑或檔案不存在 (Path/IO)
+- **錯誤信息**: `ls: cannot access '[HIDDEN_PATH]/database_2026': No such file or directory`
+
+#### 原因分析
+1. **路徑錯誤**: 檢查 `[HIDDEN_PATH]/database_2026` 路徑是否正確。可能的原因包括：
+   - 路徑拼寫錯誤。
+   - 路徑中的目錄不存在。
+   - 路徑被意外地修改或刪除。
+
+2.
 -------------------
+
+
 ```
 
 ## 🧠 技術實作心得 (Senior Insights)
@@ -66,6 +88,9 @@ graph LR
 * **Task Type Adaptation**: 識別並解決了特定模型從 `text-generation` 遷移至 `conversational` 任務導致的規格不符錯誤。
 * **Gateway Interception**: 針對雲端開發環境（Cloud IDE）常見的網關攔截問題，識別出 RESTful 請求易受 WAF 或 Proxy 誤判為非法行為。透過將通訊層重構為官方 SDK 模式，利用內建的 Header 管理與連接池機制，將 API 調用的穩定性從原先的 85% 提升至近 100%。
 * **Model Resilience**: 實作模型熱切換機制，確保系統在特定 Provider 服務波動時，能自動遷移至備援模型 (如 Qwen 系列)，維持運維流程的連續性。
+* **安全性增強**：實作正則表達式脫敏機制，防止生產環境敏感資料外洩。
+* **併發管理**：引入 Threading 隊列處理，避免因 LLM 延遲影響主機監控任務的執行效率。
+* **環境韌性**：在 ai_agent.py 中加入環境變數校驗與預設值 (Fallback) 機制，提升自動化腳本的健壯性。
 
 ---
 
