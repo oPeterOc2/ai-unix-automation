@@ -37,12 +37,17 @@ graph LR
 
 ## ⚙️ 快速上手
 1. **設定環境變數**:
+   建立 `.env` 檔案並填入：
+   ```text
+   HF_TOKEN='your_huggingface_token'
+   ```
+   或是直接在終端機執行：
    ```bash
    export HF_TOKEN='your_huggingface_token'
    ```
 2. 安裝必要套件
    ```bash
-   pip install huggingface_hub requests
+   pip install -r requirements.txt
    ```
 3. 執行診斷流程
    ```bash
