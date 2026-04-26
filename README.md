@@ -16,10 +16,10 @@
 ## 🔄 系統工作流 (Workflow)
 ```mermaid
 graph LR
-    A[Unix Job] -- stderr --> B[Log Buffer & Categorization]
+    A([Unix Job]) -- stderr --> B[Log Buffer & Categorization]
     B --> C[AI Agent - Python]
-    C -- Masking & Queueing --> D[LLM (Qwen 2.5)]
-    D -- Expert Advice --> E[Diagnosis Report]
+    C -- Masking & Queueing --> D{{LLM Qwen 2.5}}
+    D -- Expert Advice --> E([Diagnosis Report])
 ```
 
 ## 🛠️ 技術棧
