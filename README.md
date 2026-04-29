@@ -1,21 +1,21 @@
 # AI-Powered Unix O&M Diagnostic Agent
 
-這是一個基於 AIOps 概念的自動化維運原型系統。當 Unix 系統中的 Job 發生失敗時，該工具能自動擷取 `stderr` 錯誤日誌，並透過雲端 LLM (Large Language Model) 進行即時的根因分析 (Root Cause Analysis)，提供精確的修復建議。
+This is an automated operations prototype based on the AIOps concept. When a job failure occurs in a Unix environment, this tool automatically captures `stderr` error logs and performs real-time Root Cause Analysis (RCA) via a cloud-based LLM (Large Language Model) to provide precise remediation suggestions.
 
 
 
-## 🚀 核心功能
-* **異步錯誤捕捉與診斷**：利用 Unix Pipeline 技術監控錯誤流，並透過 **Python 異步隊列處理機制**進行非阻塞診斷。
-* **自動數據脫敏 (Data Masking)**：在傳輸前自動遮蔽 IP 地址與內部路徑，確保運維數據安全。
-* **智能日誌分析**：整合 Hugging Face Inference API，針對複雜的系統報錯（如 Permission Denied, Path Not Found）提供人類可讀的診斷報告。
-* **多後端 API 適配**：支援雲端 (HF)、**本地 (Ollama) 與企業內部 Server** 三種模式，具備 API 頻率限制與熱切換功能。
+## 🚀 Core Features
+* **Asynchronous Error Capture & Diagnosis**: Utilizes Unix Pipeline technology to monitor error streams and performs non-blocking diagnosis through a **Python asynchronous queue processing mechanism**.
+* **Automated Data Masking**: Automatically masks IP addresses and internal paths before transmission to ensure the security of operational data.
+* **Intelligent Log Analysis**: Integrates the Hugging Face Inference API to provide human-readable diagnostic reports for complex system errors (e.g., Permission Denied, Path Not Found).
+* **Multi-Backend API Adaptation**: Supports three modes: Cloud (HF), **Local (Ollama), and Internal Enterprise Servers**, featuring API rate limiting and hot-swapping capabilities.
 
-### 📺 實機演示 (Demo)
+### 📺 Demo
 ![Unix O&M Diagnostic Agent Demo](https://github.com/user-attachments/assets/1cf6aaca-f9be-471b-a79a-6b856a5741c1)
 
-*(若上方影片無法直接播放，請點擊圖片或連結跳轉至影片頁面)*
+*(If the video above does not play, please click the image or link to jump to the video page)*
 
-## 🔄 系統工作流 (Workflow)
+## 🔄 Workflow
 ```mermaid
 graph LR
     A([Unix Job]) -- stderr --> B[Log Buffer & Categorization]
@@ -24,93 +24,94 @@ graph LR
     D -- Expert Advice --> E([Diagnosis Report])
 ```
 
-## 🛠️ 技術棧
-* **語言**: Bash Shell, Python 3.x **(Threading, Queue)**
-* **AI 基礎設施**: Hugging Face SDK (`huggingface_hub`)
-* **核心模型**: `Qwen/Qwen2.5-7B-Instruct` (Serverless Inference API)
-* **開發環境**: GitHub Codespaces
+## 🛠️ Technology Stack
+* **Languages**: Bash Shell, Python 3.x **(Threading, Queue)**
+* **AI Infrastructure**: Hugging Face SDK (`huggingface_hub`)
+* **Core Model**: `Qwen/Qwen2.5-7B-Instruct` (Serverless Inference API)
+* **Development Environment**: GitHub Codespaces
 
-## 📂 檔案架構
-* `job.sh`: 模擬業務邏輯，包含**錯誤自動分類**、時間戳記紀錄與背景診斷觸發。
-* `ai_agent.py`: 核心 AI 邏輯，實作 **OOP 類別封裝**、數據脫敏、異步處理與多後端支持。
-* `test_hf.py`: 環境驗證工具，用於診斷模型端點可用性與 Token 權限。
+## 📂 File Structure
+* `job.sh`: Simulates business logic, including **automated error classification**, timestamp recording, and background diagnostic triggers.
+* `ai_agent.py`: Core AI logic, implementing **OOP class encapsulation**, data masking, asynchronous processing, and multi-backend support.
+* `test_hf.py`: Environment verification tool, used to diagnose model endpoint availability and Token permissions.
 
-## ⚙️ 快速上手
-1. **設定環境變數**:
-   建立 `.env` 檔案並填入：
+## ⚙️ Quick Start
+1. **Set Environment Variables**:
+   Create a `.env` file and fill in:
    ```text
    HF_TOKEN='your_huggingface_token'
    ```
-   或是直接在終端機執行：
+   Or execute directly in the terminal:
    ```bash
    export HF_TOKEN='your_huggingface_token'
    ```
-2. 安裝必要套件
+2. **Install Necessary Packages**:
    ```bash
    pip install -r requirements.txt
    ```
-3. 執行診斷流程
+3. **Execute Diagnostic Workflow**:
    ```bash
    chmod +x job.sh
    ./job.sh
    ```
-## 📖 診斷輸出範例
+## 📖 Diagnostic Output Example
 ```text
-### 1. 終端機即時監控 (Terminal Console)
-[2026-04-25 23:48:11] 🚀 啟動業務 Job (模擬環境)...
-[2026-04-25 23:48:11] !! 檢測到失敗 (Exit Code: 2) !!
-[2026-04-25 23:48:11] 🔍 初步判定: 路徑或檔案不存在 (Path/IO)
-[2026-04-25 23:48:11] 正在傳送至 AI 進行深度 RCA 分析...
-[2026-04-25 23:48:11] ✅ AI 診斷已在背景啟動，報告將輸出至: ai_report.log
+### 1. Terminal Console (Real-time)
+[2026-04-29 23:41:42] 🚀 Starting Business Job (Simulated Environment)...
+[2026-04-29 23:41:42] !! Failure Detected (Exit Code: 2) !!
+[2026-04-29 23:41:42] 🔍 Preliminary Assessment: Path/IO
+[2026-04-29 23:41:42] Sending to AI for deep RCA analysis...
+[2026-04-29 23:41:42] ✅ AI Diagnosis started in background, report will be saved to: ai_report.log
 
-### 2. AI 診斷報告紀錄 (ai_report.log)
+### 2. AI Diagnostic Report (ai_report.log)
 
---- AI 診斷報告 ---
-### RCA 報告
+--- AI Diagnostic Report ---
+### Root Cause Analysis (RCA) Report
 
-#### 事件概述
-在 2026-04-25 23:49:44 時間點，系統嘗試執行 `ls` 命令以列出指定路徑 `[HIDDEN_PATH]/database_2026` 的內容，但因該路徑不存在而失敗。
+#### Error Log Summary
+- **Time:** 2026-04-29 23:41:42
+- **Directory:** [HIDDEN_PATH]
+- **Error Type:** Path/IO
+- **Error Message:** `ls: cannot access '[HIDDEN_PATH]/database_2026': No such file or directory`
 
-#### 事件詳細
-- **時間**: 2026-04-25 23:49:44
-- **路徑**: `[HIDDEN_PATH]/database_2026`
-- **錯誤類型**: 路徑或檔案不存在 (Path/IO)
-- **錯誤信息**: `ls: cannot access '[HIDDEN_PATH]/database_2026': No such file or directory`
+#### Analysis
+1. **Error Identification:**
+   - The error message indicates that the `ls` command is unable to access the directory `database_2026` located at `[HIDDEN_PATH]`.
+   - The error is a "No such file or directory" error, which suggests that the directory does not exist at the specified path.
 
-#### 原因分析
-1. **路徑錯誤**: 檢查 `[HIDDEN_PATH]/database_2026` 路徑是否正確。可能的原因包括：
-   - 路徑拼寫錯誤。
-   - 路徑中的目錄不存在。
-   - 路徑被意外地修改或刪除。
+2. **Possible Causes:**
+   - **Directory Not Created:** The directory `database_2026` may not have been created or may have been deleted.
+   - **Incorrect Path:** The path specified in the error message might be incorrect or the directory might have been moved to a different location.
+   - **Permissions Issue:** The user running the `ls` command might not have the necessary permissions to access the directory.
 
-2.
--------------------
+3. **Verification
+---------------------------
 
 
 ```
 
-## 🧠 技術實作心得 (Senior Insights)
-在 Prototype 開發過程中，本專案針對分散式系統整合常見的阻塞進行了深度排查與優化：
+## 🧠 Senior Insights
+During the prototype development, this project conducted deep troubleshooting and optimization for common blocking issues in distributed system integration:
 
-* **Task Type Adaptation**: 識別並解決了特定模型從 `text-generation` 遷移至 `conversational` 任務導致的規格不符錯誤。
-* **Gateway Interception**: 針對雲端開發環境（Cloud IDE）常見的網關攔截問題，識別出 RESTful 請求易受 WAF 或 Proxy 誤判為非法行為。透過將通訊層重構為官方 SDK 模式，利用內建的 Header 管理與連接池機制，將 API 調用的穩定性從原先的 85% 提升至近 100%。
-* **Model Resilience**: 實作模型熱切換機制，確保系統在特定 Provider 服務波動時，能自動遷移至備援模型 (如 Qwen 系列)，維持運維流程的連續性。
-* **安全性增強**：實作正則表達式脫敏機制，防止生產環境敏感資料外洩。
-* **併發管理**：引入 Threading 隊列處理，避免因 LLM 延遲影響主機監控任務的執行效率。
-* **環境韌性**：在 ai_agent.py 中加入環境變數校驗與預設值 (Fallback) 機制，提升自動化腳本的健壯性。
-
----
-
-## 🛠️ 開發方法論 (Development Methodology)
-
-本專案採用 **AI-Augmented Development (AI 增強開發)** 模式進行實作，展現了資深開發者在 AI 時代的協作效率與技術判斷力：
-
-* **快速原型迭代 (Rapid Prototyping)**：利用 LLM 協作進行代碼建構，將研發重點由傳統的「手工編碼」轉移至**「系統架構設計」**與**「跨環境整合驗證」**。
-* **技術決策與調試**：在開發過程中，主導了多次關鍵技術轉向。包括針對 GitHub Codespaces 網路環境進行通訊協定分析，並決定將架構由 `REST-based` 遷移至 `SDK-based` 以確保生產級別的穩定性。
-* **持續優化思維**：透過 AI 輔助快速排查模型端點 (Endpoint) 與任務類型 (Task Type) 的相容性問題，體現了在複雜雲端生態下快速定位問題並交付解決方案的能力。
+* **Task Type Adaptation**: Identified and resolved schema mismatch errors caused by migrating specific models from `text-generation` to `conversational` tasks.
+* **Gateway Interception**: Addressed common gateway interception issues in Cloud IDEs, identifying that RESTful requests are prone to misclassification as illegal actions by WAFs or Proxies. By refactoring the communication layer to the official SDK mode, leveraging built-in header management and connection pooling, API calling stability was increased from 85% to nearly 100%.
+* **Model Resilience**: Implemented a model hot-swapping mechanism to ensure the system automatically migrates to backup models (such as the Qwen series) during service fluctuations from specific providers, maintaining the continuity of the operations workflow.
+* **Security Enhancement**: Implemented regex-based masking to prevent sensitive production data leakage.
+* **Concurrency Management**: Introduced Threading Queue processing to prevent LLM latency from affecting the execution efficiency of host monitoring tasks.
+* **Environmental Robustness**: Added environment variable validation and fallback mechanisms in `ai_agent.py` to improve the reliability of automation scripts.
 
 ---
-## 👨‍💻 作者與背景
+
+## 🛠️ Development Methodology
+
+This project utilizes the **AI-Augmented Development** model, demonstrating the collaborative efficiency and technical judgment of a senior developer in the AI era:
+
+* **Rapid Prototyping**: Collaborated with LLMs for code construction, shifting the focus from "manual coding" to **"system architecture design"** and **"cross-environment integration validation"**.
+* **Technical Decision-Making & Debugging**: Led several key technical pivots, including protocol analysis of the GitHub Codespaces network environment, resulting in a migration from `REST-based` to `SDK-based` architecture to ensure production-grade stability.
+* **Continuous Optimization**: Used AI to quickly troubleshoot compatibility issues between model endpoints and task types, demonstrating the ability to rapidly locate problems and deliver solutions within complex cloud ecosystems.
+
+---
+## 👨‍💻 Author & Background
 **Developed by Chan-Ka-Ho | 2026 AIOps Research Project**
-* **專業領域**：8 年後端開發與生產支持 (PSR) 經驗，專精於 Oracle、Unix 運維與 AI 自動化。
-* **相關專案**：[Smart SQL Auditor](https://github.com/oPeterOc2/sql-auditor) - 專注於資料庫層面的 AI 安全審計工具。
+* **Professional Expertise**: 8 years of experience in backend development and Production Support (PSR).
+* **Related Project**: [Smart SQL Auditor](https://github.com/oPeterOc2/sql-auditor)
