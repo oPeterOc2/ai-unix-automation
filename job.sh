@@ -1,9 +1,10 @@
 #!/bin/bash
 # Define Variables
-LOG_FILE="job_error.log"
+# Split the log
+TIMESTAMP=$(date "+%Y%m%d_%H%M%S")
+LOG_FILE="job_error_${TIMESTAMP}.log"
 AGENT_SCRIPT="ai_agent.py"
 REPORT_FILE="ai_report.log"  # Added: AI Diagnostic Report path
-TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
 
 echo "[$TIMESTAMP] 🚀 Starting Business Job (Simulated Environment)..."
 
