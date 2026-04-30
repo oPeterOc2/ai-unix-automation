@@ -2,6 +2,7 @@
 
 This is an automated operations prototype based on the AIOps concept. When a job failure occurs in a Unix environment, this tool automatically captures `stderr` error logs and performs real-time Root Cause Analysis (RCA) via a cloud-based LLM (Large Language Model) to provide precise remediation suggestions.
 
+This project extends my production RCA and automation experience by applying LLM-assisted diagnostics to Unix job failures, combining traditional PSR workflows with AI-driven analysis.
 
 
 ## 🚀 Core Features
