@@ -107,4 +107,6 @@ if __name__ == "__main__":
     if raw_input.strip():
         task_queue.put(raw_input)
         task_queue.join()
+        # Input None to break task
+        task_queue.put(None);
         time.sleep(0.5)  # Buffer for printing
