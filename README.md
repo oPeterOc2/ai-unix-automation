@@ -12,7 +12,7 @@ This project extends my production RCA and automation experience by applying LLM
 * **Multi-Backend API Adaptation**: Supports three modes: Cloud (HF), **Local (Ollama), and Internal Enterprise Servers**, featuring API rate limiting and hot-swapping capabilities.
 
 ### 📺 Demo
-![Unix O&M Diagnostic Agent Demo](https://github.com/user-attachments/assets/d1f7b472-2fbd-4a5a-bdad-45dfb853d60c)
+![Unix O&M Diagnostic Agent Demo](https://github.com/user-attachments/assets/a0c785b2-3400-4ea9-9b98-35f9e461532e)
 
 *(If the video above does not play, please click the image or link to jump to the video page)*
 
@@ -58,11 +58,11 @@ graph LR
 ## 📖 Diagnostic Output Example
 ```text
 ### 1. Terminal Console (Real-time)
-[2026-04-29 23:41:42] 🚀 Starting Business Job (Simulated Environment)...
-[2026-04-29 23:41:42] !! Failure Detected (Exit Code: 2) !!
-[2026-04-29 23:41:42] 🔍 Preliminary Assessment: Path/IO
-[2026-04-29 23:41:42] Sending to AI for deep RCA analysis...
-[2026-04-29 23:41:42] ✅ AI Diagnosis started in background, report will be saved to: ai_report.log
+[20260430_071135] 🚀 Starting Business Job (Simulated Environment)...
+[20260430_071135] !! Failure Detected (Exit Code: 2) !!
+[20260430_071135] 🔍 Preliminary Assessment: Path/IO
+[20260430_071135] Sending to AI for deep RCA analysis...
+[20260430_071135] ✅ AI Diagnosis started in background, report will be saved to: ai_report.log
 
 ### 2. AI Diagnostic Report (ai_report.log)
 
@@ -70,22 +70,24 @@ graph LR
 ### Root Cause Analysis (RCA) Report
 
 #### Error Log Summary
-- **Time:** 2026-04-29 23:41:42
+- **Time:** 20260430_071135
 - **Directory:** [HIDDEN_PATH]
 - **Error Type:** Path/IO
 - **Error Message:** `ls: cannot access '[HIDDEN_PATH]/database_2026': No such file or directory`
 
 #### Analysis
 1. **Error Identification:**
-   - The error message indicates that the `ls` command is unable to access the directory `database_2026` located at `[HIDDEN_PATH]`.
-   - The error is a "No such file or directory" error, which suggests that the directory does not exist at the specified path.
+   - The error message indicates that the `ls` command is unable to access the directory `database_2026` within the specified path `[HIDDEN_PATH]`.
+   - This suggests that the directory `database_2026` does not exist in the specified location.
 
 2. **Possible Causes:**
    - **Directory Not Created:** The directory `database_2026` may not have been created or may have been deleted.
-   - **Incorrect Path:** The path specified in the error message might be incorrect or the directory might have been moved to a different location.
+   - **Incorrect Path:** The path specified in the error message might be incorrect or incomplete.
    - **Permissions Issue:** The user running the `ls` command might not have the necessary permissions to access the directory.
 
-3. **Verification
+3. **Verification Steps:**
+   - **Check Directory Existence:**
+     ```sh
 ---------------------------
 
 
