@@ -11,7 +11,7 @@ This is an automated operations prototype based on the AIOps concept. When a job
 * **Multi-Backend API Adaptation**: Supports three modes: Cloud (HF), **Local (Ollama), and Internal Enterprise Servers**, featuring API rate limiting and hot-swapping capabilities.
 
 ### 📺 Demo
-![Unix O&M Diagnostic Agent Demo](https://github.com/user-attachments/assets/1cf6aaca-f9be-471b-a79a-6b856a5741c1)
+![Unix O&M Diagnostic Agent Demo](https://github.com/user-attachments/assets/d1f7b472-2fbd-4a5a-bdad-45dfb853d60c)
 
 *(If the video above does not play, please click the image or link to jump to the video page)*
 
